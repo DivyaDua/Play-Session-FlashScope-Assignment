@@ -22,9 +22,9 @@ class HomeController extends Controller {
     Ok("Hello World").withSession("Yes" -> "Session started for user")
   }
 
-  /*def indexAction(id: Int) = Action { implicit request: Request[AnyContent] =>
-    Redirect(routes.HomeController.action2(id.toString)).withSession("Yes" -> s"User with id: $id")
-  }*/
+  def action3(id: Int) = Action { implicit request: Request[AnyContent] =>
+    Redirect(routes.HomeController.action2(s"with id: $id"))/*.withSession("Yes" -> s"User with id: $id")*/
+  }
 
   def action1() = Action{
     request =>

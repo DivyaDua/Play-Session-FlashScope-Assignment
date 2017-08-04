@@ -4,7 +4,8 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /home/:user                        controllers.HomeController.action2(user: String)
+GET     /home/id/:id                              controllers.HomeController.action3(id: Int)
+GET     /home/user/:user                        controllers.HomeController.action2(user: String)
 GET     /                                  controllers.HomeController.index
 GET     /home                              controllers.HomeController.action1
 
