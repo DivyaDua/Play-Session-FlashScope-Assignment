@@ -1,7 +1,7 @@
 package controllers
 
 import javax.inject._
-import play.api._
+//import play.api._
 import play.api.mvc._
 
 /**
@@ -19,24 +19,36 @@ class HomeController extends Controller {
    * a path of `/`.
    */
   def index = Action { implicit request: Request[AnyContent] =>
-    Ok("Hello World").withSession("Yes" -> "Session started for user")
+    Ok("<h1>Hello People</h1><h3>Enter your name with URL<h3>").as(HTML)
+  }
+
+  def startSession(name: String) = Action{
+    implicit request =>
+      Redirect(routes.HomeController.getSession).withSession("user" -> name)
+  }
+
+  def flashAction = Action{
+    request => Ok(request.flash.get("success").getOrElse("<h1>No user found</h1>")).as(HTML)
+  }
+
+  def getSession = Action{
+    request =>
+      request.session.get("user").map { user =>
+       Redirect(routes.HomeController.flashAction).flashing("success" -> s"<h2>Hello $user</h2>")
+      }.getOrElse {
+        Redirect(routes.HomeController.flashAction).flashing("success" -> "<h2>Session is not yet started</h2>")
+      }.as(HTML)
+  }
+
+
+  /*def action2(user: String) = Action{
+    Redirect(routes.HomeController.getSession).flashing(
+      "success" -> s"<h1>Hii user $user</h1>")
   }
 
   def action3(id: Int) = Action { implicit request: Request[AnyContent] =>
-    Redirect(routes.HomeController.action2(s"with id: $id"))/*.withSession("Yes" -> s"User with id: $id")*/
-  }
+    Redirect(routes.HomeController.getSession(s"with id: $id"))
+  }*/
 
-  def action1() = Action{
-    request =>
-      request.session.get("Yes").map { user =>
-       Ok(request.flash.get("success").getOrElse("No user found "))
-      }.getOrElse {
-        Unauthorized("Oops : No user")
-      }
-  }
 
-  def action2(user: String) = Action{
-    Redirect(routes.HomeController.action1()).flashing(
-      "success" -> s"We have got a user $user")
-  }
 }
