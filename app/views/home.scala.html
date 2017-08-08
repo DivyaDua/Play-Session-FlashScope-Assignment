@@ -1,0 +1,7 @@
+@()(implicit flash: Flash)
+
+@main("Welcome to Play") {
+<h1>Welcome to Play Session!</h1>
+<h3>@flash.get("Success").getOrElse(flash.get("Failure"))</h3>
+
+}
